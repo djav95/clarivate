@@ -23,7 +23,7 @@ class AlliterationControllerTests {
 	fun testExample() {
 		val sentence = "Becky's beagle barked and bayed, becoming bothersome for Billy."
 		assertThat(restTemplate!!.getForObject("http://localhost:$port/alliteration?sentence=$sentence",
-				String::class.java)).contains("Alliteration percentage, b, 77.78")
+				String::class.java)).contains("Alliteration percentage, b, 70.00")
 	}
 
 	@Test
@@ -52,8 +52,16 @@ class AlliterationControllerTests {
 
 	@Test
 	@Throws(Exception::class)
-	fun invalidChar() {
+	fun punctuationSeparation() {
 		val sentence = "!No .result."
+		assertThat(restTemplate!!.getForObject("http://localhost:$port/alliteration?sentence=$sentence",
+				String::class.java)).contains("Alliteration percentage, r, 50.00")
+	}
+
+	@Test
+	@Throws(Exception::class)
+	fun onlyPunctuation() {
+		val sentence = ".."
 		assertThat(restTemplate!!.getForObject("http://localhost:$port/alliteration?sentence=$sentence",
 				String::class.java)).contains("Alliteration percentage, null, 0.00")
 	}

@@ -5,6 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
+import kotlin.collections.HashMap
 
 /**
  * Spring Boot Controller for alliterations.
@@ -27,8 +29,9 @@ class AlliterationController {
     fun alliteration(@RequestParam(value = "sentence") sentence: String): String {
         if (!sentence.isNullOrEmpty()) {
             val alliterationCounter: HashMap<String, Int> = HashMap()
-            // Split a sentence by whitespaces
-            val tokens = sentence.split("\\s".toRegex())
+            var tokens: List<String> = sentence
+                    .split("[\\p{Punct}\\s]+".toRegex()) // Split a sentence by punctuation and whitespace
+                    .filter { it.isNotBlank() } //Filter empty tokens
 
             // For each token (or word), checks if the first character is a consonant, and adds the number of occurrence
             tokens.forEach { token ->
